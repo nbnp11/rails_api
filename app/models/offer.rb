@@ -2,7 +2,7 @@
 
 class Offer < ApplicationRecord
   belongs_to :block
-  has_one :price
+  has_one :price, dependent: :destroy
 
   validate :check_offer_type
 

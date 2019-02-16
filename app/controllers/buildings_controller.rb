@@ -12,7 +12,10 @@ class BuildingsController < ApplicationController
     render json: @building if @building.save
   end
 
-  def delete; end
+  def delete
+    @building = Building.find(params[:id])
+    redirect_to buildings_path if @building.destroy!
+  end
 
   def show; end
 
