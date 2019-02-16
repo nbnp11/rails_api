@@ -36,4 +36,12 @@ RSpec.describe BuildingsController, type: :controller do
       expect(response.body).to eq json_response
     end
   end
+
+  context 'test index method' do
+    it 'should return all buildings if no params' do
+      json_response = Building.all.to_json
+      get :index
+      expect(response.body).to eq json_response
+    end
+  end
 end

@@ -22,5 +22,8 @@ class BuildingsController < ApplicationController
     render json: @building
   end
 
-  def index; end
+  def index
+    @collection = Filter.new(params[:filter]).call
+    render json: @collection
+  end
 end
