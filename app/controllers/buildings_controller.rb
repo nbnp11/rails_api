@@ -6,7 +6,11 @@ class BuildingsController < ApplicationController
     render json: @building
   end
 
-  def update; end
+  def update
+    @building = Building.find(params[:id])
+    @building.touch
+    render json: @building if @building.save
+  end
 
   def delete; end
 
