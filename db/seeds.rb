@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Building.create!(type: 'skyscraper',
+Building.create!(bClass: 'skyscraper',
                street: 'Pushkina',
          house_number: 1,
                floors: 100)
