@@ -5,7 +5,7 @@ RSpec.describe BuildingsController, type: :controller do
     it 'should return json of create object' do
       post :create
       json_response = Building.last.to_json
-      expect(response.body).to eq(json_response)
+      expect(response.body).to eq json_response
     end
   end
 
@@ -15,16 +15,25 @@ RSpec.describe BuildingsController, type: :controller do
       patch :update, params: params
       json_response = Building.last.to_json
       json_response = JSON.parse json_response.gsub('=>', ':')
-      expect( JSON.parse response.body.gsub('=>', ':' )).to eq (json_response)
+      expect(JSON.parse response.body.gsub('=>', ':')).to eq json_response
     end
   end
 
   context 'test delete method' do
     it 'should delete building' do
-      params = {id: Building.last.id }
+      params = { id: Building.last.id }
       future_count = Building.count - 1
       delete :delete, params: params
       expect(Building.count).to eq future_count
+    end
+  end
+
+  context 'test show method' do
+    it 'should return json of object' do
+      params = { id: Building.last.id }
+      json_response = Building.last.to_json
+      get :show, params: params
+      expect(response.body).to eq json_response
     end
   end
 end

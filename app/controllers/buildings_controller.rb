@@ -17,7 +17,10 @@ class BuildingsController < ApplicationController
     redirect_to buildings_path if @building.destroy!
   end
 
-  def show; end
+  def show
+    @building = Building.find(params[:id])
+    render json: @building
+  end
 
   def index; end
 end
