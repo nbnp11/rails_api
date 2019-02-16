@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 2019_02_16_154826) do
   end
 
   create_table "buildings", force: :cascade do |t|
-    t.string "b_class"
+    t.string "bClass"
     t.string "street"
     t.string "house_number"
     t.integer "floors"
