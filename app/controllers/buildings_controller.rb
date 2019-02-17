@@ -2,10 +2,16 @@
 
 class BuildingsController < ApplicationController
   def create
-    #binding.pry
+    binding.pry
+    return unless params[:data][:building_params]
     @building = Building.create!(building_params)
-    render json: @building#.serializable_hash
-    #redirect_to buildings_path
+    return unless params[:data][:block_params]
+    @block = @building.blocks.create!(block_params)
+    return unless !!params[:data][:offer_params]
+    @offer = @block.offers.create!(offer_params)
+    return unless !!params[:data][:price_params]
+    @price = @offer.create_price!(price_params)
+    render json: @building
   end
 
   def update
@@ -34,7 +40,22 @@ class BuildingsController < ApplicationController
   private
 
   def building_params
-    building_params = params[:data][:attributes] if params[:data][:type] == 'buildings'
+    building_params = params[:data][:building_params] unless params[:data][:building_params].nil?
     building_params.permit!
+  end
+
+  def block_params
+    block_params = params[:data][:block_params] unless params[:data][:block_params].nil?
+    block_params.permit!
+  end
+
+  def offer_params
+    offer_params = params[:data][:offer_params] unless params[:data][:offer_params].nil?
+    offer_params.permit!
+  end
+
+  def price_params
+    price_params = params[:data][:price_params] unless params[:data][:price_params].nil?
+    price_params.permit!
   end
 end
