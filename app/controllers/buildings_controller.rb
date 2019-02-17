@@ -2,8 +2,10 @@
 
 class BuildingsController < ApplicationController
   def create
-    @building = Building.create!
+    #binding.pry
+    @building = Building.create!(building_params)
     render json: @building#.serializable_hash
+    #redirect_to buildings_path
   end
 
   def update
@@ -27,5 +29,12 @@ class BuildingsController < ApplicationController
     @collection = Filter.new(params[:filter]).call
     #@collection.each {|item| item = item.serializable_hash }
     render json: @collection
+  end
+
+  private
+
+  def building_params
+    building_params = params[:data][:attributes] if params[:data][:type] == 'buildings'
+    building_params.permit!
   end
 end

@@ -1,3 +1,3 @@
 class BuildingSerializer < ActiveModel::Serializer
-  attributes :id, :bClass, :street, :house_number, :floors
+  attributes :id, :bclass, :street, :housenumber, :floors
 end
