@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe BuildingsController, type: :controller do
   context 'test create method' do
-    it 'should return json of create object' do
+    it 'should return json of created object' do
       post :create
-      json_response = Building.last.to_json
+      json_response = BuildingSerializer.new(Building.last)
       expect(response.body).to eq json_response
     end
   end
