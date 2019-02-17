@@ -2,7 +2,6 @@
 
 class BuildingsController < ApplicationController
   def create
-    binding.pry
     return unless params[:data][:building_params]
     @building = Building.create!(building_params)
     return unless params[:data][:block_params]
