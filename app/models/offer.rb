@@ -4,18 +4,18 @@ class Offer < ApplicationRecord
   belongs_to :block
   has_one :price, dependent: :destroy
 
-  validate :check_offer_type
+  validate :check_offertype
 
-  def read_offer_type
+  def read_offertype
     %w[rent sale].each do |type|
-      return 'аренда' if type == self.offer_type
-      return 'продажа' if type == self.offer_type
+      return 'аренда' if type == self.offertype
+      return 'продажа' if type == self.offertype
     end
   end
 
   private
 
-  def check_offer_type
-    return errors.add(:offer_type, "must be either 'rent' or 'sale' ") unless (self.offer_type == 'rent' || self.offer_type == 'sale')
+  def check_offertype
+    return errors.add(:offertype, "must be either 'rent' or 'sale' ") unless (self.offertype == 'rent' || self.offertype == 'sale')
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_17_123953) do
+ActiveRecord::Schema.define(version: 2019_02_17_172308) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 2019_02_17_123953) do
 
   create_table "offers", force: :cascade do |t|
     t.bigint "block_id"
-    t.string "offer_type"
+    t.string "offertype"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["block_id"], name: "index_offers_on_block_id"
@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 2019_02_17_123953) do
 
   create_table "prices", force: :cascade do |t|
     t.bigint "offer_id"
-    t.integer "value"
+    t.integer "pricevalue"
     t.integer "currency"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
