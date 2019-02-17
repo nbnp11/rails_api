@@ -37,6 +37,17 @@ class BuildingsController < ApplicationController
     render json: @collection
   end
 
+  def get_orm
+    @collection = Block.where(area: 150..300)
+                       .where(floor: [1,8,10])
+                       .joins(:building)
+                       .where(buildings: { bclass: 'A', street: 'Пресненская набережная' })
+    @collection.each do |block|
+      block.offers.reject {|offer| offer.price.pricevalue > 5000}
+    end
+    render json: @collection
+  end
+
   private
 
   def building_params
