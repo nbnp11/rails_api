@@ -2,14 +2,12 @@
 
 class BuildingsController < ApplicationController
   def create
+    #binding.pry
     return unless params[:data][:building_params]
     @building = Building.create!(building_params)
-    return unless params[:data][:block_params]
-    @block = @building.blocks.create!(block_params)
-    return unless !!params[:data][:offer_params]
-    @offer = @block.offers.create!(offer_params)
-    return unless !!params[:data][:price_params]
-    @price = @offer.create_price!(price_params)
+    @block = @building.blocks.create!(block_params) if @building && params[:data][:block_params]
+    @offer = @block.offers.create!(offer_params) if @block && params[:data][:offer_params]
+    @price = @offer.create_price!(price_params) if @offer && params[:data][:price_params]
     render json: @building
   end
 

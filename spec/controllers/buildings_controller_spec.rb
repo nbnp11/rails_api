@@ -1,21 +1,26 @@
 require 'rails_helper'
 
 RSpec.describe BuildingsController, type: :controller do
-  context 'test create method' do
+  describe 'test create method' do
     it 'should return json of created object' do
-      post :create
-      json_response = BuildingSerializer.new(Building.last)
-      expect(response.body).to eq json_response
+      #binding.pry
+      params = {}
+      params[:data] = {}
+      params[:data][:building_params] = { bclass: 'Z',
+                                          street: 'Dekabristov',
+                                          housenumber: '13',
+                                          floors: '44' }
+      post :create, params: params
+      expect(response.header['Content-Type']).to include 'application/vnd.api+json'
     end
   end
 
   context 'test update method' do
     it 'should return json of updated object' do
+      #binding.pry
       params = { id: Building.last.id }
       patch :update, params: params
-      json_response = Building.last.to_json
-      json_response = JSON.parse json_response.gsub('=>', ':')
-      expect(JSON.parse response.body.gsub('=>', ':')).to eq json_response
+      expect(response.header['Content-Type']).to include 'application/vnd.api+json'
     end
   end
 
@@ -31,17 +36,16 @@ RSpec.describe BuildingsController, type: :controller do
   context 'test show method' do
     it 'should return json of object' do
       params = { id: Building.last.id }
-      json_response = Building.last.to_json
       get :show, params: params
-      expect(response.body).to eq json_response
+      expect(response.header['Content-Type']).to include 'application/vnd.api+json'
     end
   end
 
   context 'test index method' do
     it 'should return all buildings if no params' do
-      json_response = Building.all.to_json
+      #json_response = Building.all.to_json
       get :index
-      expect(response.body).to eq json_response
+      expect(response.header['Content-Type']).to include 'application/vnd.api+json'
     end
   end
 end
