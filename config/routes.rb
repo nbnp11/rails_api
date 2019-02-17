@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   delete 'building/:id', to: "buildings#delete"
 
   get 'get_orm', to: 'buildings#get_orm'
+  get 'get_sql', to: 'buildings#get_sql'
 end
