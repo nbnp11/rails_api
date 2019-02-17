@@ -27,13 +27,35 @@ class BuildingsController < ApplicationController
 
   def show
     @building = Building.find(params[:id])
-    render json: @building#.serializable_hash
+    render json: @building
   end
 
   def index
-    #binding.pry
     @collection = Filter.new(params[:filter]).call
-    #@collection.each {|item| item = item.serializable_hash }
+    render json: @collection
+  end
+
+  def get_orm
+    @collection = Block.where(area: 150..300)
+                      .where(floor: [1,8,10])
+                      .joins(:building)
+                      .where(buildings: {bclass: "A", street: 'Пресненская набережная'})
+                      .joins(offers: :price)
+                      .where(prices: {pricevalue: 0..5000})
+    render json: @collection
+  end
+
+  def get_sql
+    @sql = "SELECT blocks.* FROM blocks
+             INNER JOIN buildings ON buildings.id = blocks.building_id
+             INNER JOIN offers ON offers.block_id = blocks.id
+             INNER JOIN prices ON prices.offer_id = offers.id
+             WHERE blocks.area BETWEEN 150 AND 300
+             AND blocks.floor IN (1, 8, 10)
+             AND buildings.bclass = 'A'
+             AND buildings.street = 'Пресненская набережная'
+             AND prices.pricevalue BETWEEN 0 AND 5000"
+    @collection = ActiveRecord::Base.connection.execute(@sql)
     render json: @collection
   end
 
