@@ -2,19 +2,19 @@
 
 class BuildingsController < ApplicationController
   def create
-    #binding.pry
+    binding.pry
     return unless params[:data][:building_params]
     @building = Building.create!(building_params)
-    @block = @building.blocks.create!(block_params) if @building && params[:data][:block_params]
-    @offer = @block.offers.create!(offer_params) if @block && params[:data][:offer_params]
-    @price = @offer.create_price!(price_params) if @offer && params[:data][:price_params]
+    @block = @building.blocks.create!(block_params) if @building && block_params
+    @offer = @block.offers.create!(offer_params) if @block && offer_params
+    @price = @offer.create_price!(price_params) if @offer && price_params
     render json: @building
   end
 
   def update
     @building = Building.find(params[:id])
     @building.touch
-    render json: @building if @building.save! #.serializable_hash 
+    render json: @building if @building.save!
   end
 
   def delete
@@ -32,7 +32,7 @@ class BuildingsController < ApplicationController
     render json: @collection
   end
 
-  def get_orm
+  def orm_request
     @collection = Block.where(area: 150..300)
                       .where(floor: [1,8,10])
                       .joins(:building)
@@ -42,7 +42,7 @@ class BuildingsController < ApplicationController
     render json: @collection
   end
 
-  def get_sql
+  def sql_request
     @sql = "SELECT blocks.* FROM blocks
              INNER JOIN buildings ON buildings.id = blocks.building_id
              INNER JOIN offers ON offers.block_id = blocks.id
@@ -59,22 +59,27 @@ class BuildingsController < ApplicationController
   private
 
   def building_params
-    building_params = params[:data][:building_params] unless params[:data][:building_params].nil?
-    building_params.permit!
+    params[:data].require(:building_params).permit(:bclass,
+                                                   :street,
+                                                   :housenumber,
+                                                   :floors)
   end
 
   def block_params
-    block_params = params[:data][:block_params] unless params[:data][:block_params].nil?
-    block_params.permit!
+    return false unless params[:data][:block_params]
+
+    params[:data].require(:block_params).permit(:area, :floor)
   end
 
   def offer_params
-    offer_params = params[:data][:offer_params] unless params[:data][:offer_params].nil?
-    offer_params.permit!
+    return false unless params[:data][:offer_params]
+
+    params[:data].require(:offer_params).permit(:offertype)
   end
 
   def price_params
-    price_params = params[:data][:price_params] unless params[:data][:price_params].nil?
-    price_params.permit!
+    return false unless params[:data][:price_params]
+
+    params[:data].require(:price_params).permit(:pricevalue, :currency)
   end
 end
