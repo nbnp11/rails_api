@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
+  root 'buildings#index'
   resources :buildings, only: [:create, :update, :show, :index]
 
   delete 'building/:id', to: "buildings#delete"
 
-  get 'get_orm', to: 'buildings#get_orm'
-  get 'get_sql', to: 'buildings#get_sql'
+  get 'orm_request', to: 'buildings#orm_request'
+  get 'sql_request', to: 'buildings#sql_request'
 end
